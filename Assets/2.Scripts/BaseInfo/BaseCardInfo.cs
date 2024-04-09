@@ -6,20 +6,23 @@ using UnityEngine;
 
 public class BaseCardInfo : ScriptableObject
 {
-    public enum DamageType
-    {
-        SLASH, BLOW, PIERCING 
-    }
-    public enum CardType
-    {
-        MELEE, RANGE, EVADE, DEPEND
-    }
-
-    public DamageType damageType;
-    public CardType cardType;
 
     public string cardName;
 
+    public List<CardType> cardTypes;
+
+    public float costNum;
     public float damageNum;
+    public float groggyNum;
     public float defendNum;
+    public string desText;
+
+    public Sprite cardSprite;
+       
+    public enum CardType
+    {
+        SLASH, BLOW, PIERCING, EVADE, DEPEND
+    }
+
+
 }

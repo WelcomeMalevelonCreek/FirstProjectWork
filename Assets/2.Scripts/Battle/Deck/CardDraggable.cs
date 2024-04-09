@@ -30,7 +30,7 @@ public class CardDraggable : MonoBehaviour//, IBeginDragHandler, IDragHandler, I
         card = GetComponent<Card>();
 
         //카드의 scale을 변경했을 때, 해상도에 따라 카드가 놓일 Y좌표를 계산.
-        float cardHalfY = card.transform.GetComponent<RectTransform>().rect.height * (HandingManager.Instance.cardMaxSize + 0.5f) / 2f;
+        float cardHalfY = card.transform.GetComponent<RectTransform>().rect.height * (HandManager.Instance.cardMaxSize + 0.5f) / 2f;
         float canvasHalfY = canvasTf.GetComponent<RectTransform>().rect.height / 2f;
         yPos2BeExtended = cardHalfY - canvasHalfY;
 
@@ -50,11 +50,11 @@ public class CardDraggable : MonoBehaviour//, IBeginDragHandler, IDragHandler, I
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (HandingManager.Instance.endDraw)
+        if (HandManager.Instance.endDraw)
         {
             transform.SetParent(canvasTf);
             GetComponent<CanvasGroup>().blocksRaycasts = false;
-            mousePointFollow = HandingManager.Instance.dragCard = avoidOverlap = true;
+            mousePointFollow = HandManager.Instance.dragCard = avoidOverlap = true;
         }
     }
 
@@ -65,42 +65,42 @@ public class CardDraggable : MonoBehaviour//, IBeginDragHandler, IDragHandler, I
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (HandingManager.Instance.endDraw && mousePointFollow)
+        if (HandManager.Instance.endDraw && mousePointFollow)
         {
             mousePointFollow = false;
             transform.SetParent(handTf);
             transform.SetSiblingIndex(card.order);//히에라키에서 순서 변경.
             if (!isOnDropZone)
             {
-                ChangeTransform(ObjectControl.RotationAngle(gameObject, card.angle), HandingManager.Instance.cardMaxSize, card.targetPos);
-                HandingManager.Instance.RollBackGapCards(card.order);
+                ChangeTransform(ObjectControl.RotationAngle(gameObject, card.angle), HandManager.Instance.cardMaxSize, card.targetPos);
+                HandManager.Instance.RollBackGapCards(card.order);
                 StartCoroutine(Timer(0.1f));
             }
             GetComponent<CanvasGroup>().blocksRaycasts = true;
-            HandingManager.Instance.dragCard = false;
+            HandManager.Instance.dragCard = false;
         }
     }
 
     //마우스를 올렸을때 카드 회전, 확대
     void OnMouseOver()
     {
-        if (!isOnDropZone && card.isDraggable && !mousePointFollow && HandingManager.Instance.endDraw && !HandingManager.Instance.dragCard && !mouseOver && !avoidOverlap)
+        if (!isOnDropZone && card.isDraggable && !mousePointFollow && HandManager.Instance.endDraw && !HandManager.Instance.dragCard && !mouseOver && !avoidOverlap)
         {
             mouseOver = true;
             transform.SetAsLastSibling();
-            ChangeTransform(ObjectControl.RotationAngle(gameObject, 0f), HandingManager.Instance.cardMaxSize + 0.5f, new Vector3(transform.localPosition.x, yPos2BeExtended, -1f));
-            HandingManager.Instance.ExpandGapSelectedCard(card.order);
+            ChangeTransform(ObjectControl.RotationAngle(gameObject, 0f), HandManager.Instance.cardMaxSize + 0.5f, new Vector3(transform.localPosition.x, yPos2BeExtended, -1f));
+            HandManager.Instance.ExpandGapSelectedCard(card.order);
         }
     }
 
     //마우스를 치웠을때 카드 회전, 축소
     void OnMouseExit()
     {
-        if (!isOnDropZone && card.isDraggable && !mousePointFollow && HandingManager.Instance.endDraw && !HandingManager.Instance.dragCard && !avoidOverlap)
+        if (!isOnDropZone && card.isDraggable && !mousePointFollow && HandManager.Instance.endDraw && !HandManager.Instance.dragCard && !avoidOverlap)
         {
             transform.SetSiblingIndex(GetComponent<Card>().order);
-            ChangeTransform(ObjectControl.RotationAngle(gameObject, card.angle), HandingManager.Instance.cardMaxSize, card.targetPos);
-            HandingManager.Instance.RollBackGapCards(card.order);
+            ChangeTransform(ObjectControl.RotationAngle(gameObject, card.angle), HandManager.Instance.cardMaxSize, card.targetPos);
+            HandManager.Instance.RollBackGapCards(card.order);
         }
         mouseOver = false;
     }
