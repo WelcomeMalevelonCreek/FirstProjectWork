@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Pile : MonoBehaviour
 {
-    public List<BaseCardInfo> pile;
+    [SerializeField] public List<BaseCardInfo> pile = new List<BaseCardInfo>();
 
-    protected Text pileCount;
+    public TextMeshProUGUI pileCount;
+
+    //public int pileCount;
 
     public void AddToPile(BaseCardInfo cardInfo)
     {
